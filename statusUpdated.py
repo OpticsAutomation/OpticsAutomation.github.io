@@ -5,7 +5,7 @@ import subprocess
 
 
 # define filepaths
-local_repo = r"C:\Code\OMV Website\OpticsAutomation.github.io"
+local_repo = r"C:\OpticsAutomation.github.io"
 index_file_path = os.path.join(local_repo, "index.html")
 
 # define locked vs. unlocked states for HTML
@@ -41,8 +41,13 @@ def update_website(text_to_display):
     print(f"Updated index.html at: {index_file_path}")
     print("Now adding, committing, and pushing changes to Git.")
 
+    if text_to_display == unlocked_content:
+        commit_msg = "PC now unlocked"
+    else:
+        commit_msg = "PC now locked"
+
     run_git_command(["git", "add", "index.html"], cwd=local_repo)
-    run_git_command(["git", "commit", "-m", "Update index.html state from status_updater.py"], cwd=local_repo)
+    run_git_command(["git", "commit", "-m", f"Update index.html state ({commit_msg}) from status_updater.py"], cwd=local_repo)
     run_git_command(["git", "push"], cwd=local_repo)
 
 
@@ -53,11 +58,10 @@ def fetch_pc_state_change():
 
         if ("free to connect" in html_content) and (not pc_locked()):
             return unlocked_content
-        # elif ("is in use" in f) and (pc_locked()):
         elif ("do not connect" in html_content) and (pc_locked()):
             return locked_content
         else:
-            return ""
+            return None
 
 
 if __name__ == "__main__":
@@ -76,4 +80,4 @@ if __name__ == "__main__":
             pass
             print("PC state is unchanged -- no actions.")
 
-time.sleep(30)
+        time.sleep(5)
