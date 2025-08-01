@@ -9,8 +9,8 @@ local_repo = r"C:\OpticsAutomation.github.io"
 index_file_path = os.path.join(local_repo, "index.html")
 
 # define locked vs. unlocked states for HTML
-locked_content = '''<html><body><h1 style="color: green;">OMV PC is *not* in use -- you're free to connect.</h1></body></html>'''
-unlocked_content = '''<html><body><h1 style="color: red;">OMV PC is in use -- do not connect.</h1></body></html>'''
+locked_content = '''<html><body style="display:flex;justify-content:center;align-items:center;height:100vh;margin:0;"><h1 style="color: green; text-align: center; ">OMV PC is *not* in use -- you're free to connect.</h1></body></html>'''
+unlocked_content = '''<html><body style="display:flex;justify-content:center;align-items:center;height:100vh;margin:0;"><h1 style="color: red; text-align: center;">OMV PC is in use -- do not connect.</h1></body></html>'''
 
 
 # checking if PC is locked
