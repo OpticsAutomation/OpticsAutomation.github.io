@@ -1,4 +1,5 @@
 import psutil
+import ctypes
 import time
 import os
 import subprocess
@@ -15,13 +16,19 @@ unlocked_content = '''<html><body style="display:flex;justify-content:center;ali
 
 # checking if PC is locked
 def pc_locked():
-    for proc in psutil.process_iter():
-        if proc.name() == "LogonUI.exe":
-            print("## PC is LOCKED ##")
-            return True
+    time.sleep(10)
 
-    print("## PC is UNLOCKED ##")
-    return False
+    user32 = ctypes.windll.user32
+    hDesktop = user32.OpenInputDesktop(0, False, 0)
+    if hDesktop == 0:
+        # if OpenInputDesktop fails, it usually means the desktop is locked
+        print("## PC is LOCKED ##")
+        return True
+    else:
+        user32.CloseDesktop(hDesktop)
+
+        print("## PC is UNLOCKED ##")
+        return False
 
 
 # interface to run Git commands
@@ -80,4 +87,4 @@ if __name__ == "__main__":
             pass
             print("PC state is unchanged -- no actions.")
 
-        time.sleep(5)
+        time.sleep(10)
